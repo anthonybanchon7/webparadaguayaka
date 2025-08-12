@@ -1,0 +1,83 @@
+body { background: #E1A827; background-color: #E1A827;}
+
+
+
+/*.touch-card { border-radius: 8px; padding-bottom: 0; }*/
+.producto-img { max-height: 160px; object-fit: contain; padding: 6px; background: none; }
+.mini-img { width:48px; height:48px; object-fit: contain; border-radius:8px; background:white; padding:4px; }
+/*.btn-lg { font-size: 1.0rem; padding: 0.75rem; }*/
+/*.card { border: none; }*/
+
+/* Contenedor con borde para cada categoría */
+.producto-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #E1A827;
+    border-color: #5D4037;
+}
+
+.titulo{
+    font: Tahoma, sans-serif;
+}
+
+/* Tarjetas pequeñas */
+.producto-img {
+    max-height: 60px; /* mucho más pequeña */
+    padding: 2px;
+}
+
+.card-title {
+    font-size: 0.75rem;
+    line-height: 0.9rem;
+    margin-bottom: 0;
+    color: #333333;
+}
+
+.card-text {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+
+}
+
+
+/* Botón super pequeño */
+.btn-xs {
+    font-size: 0.75rem;
+    padding: 0.2rem 2rem;
+}
+
+/* Ajuste en tablet para más columnas */
+@media (max-width: 992px) {
+    .col-4 {
+        flex: 0 0 auto;
+        width: 20%; /* 4 por fila en tablet */
+    }
+}
+
+.modal {
+  z-index: 1050; /* Muy bajo */
+}
+
+.modal-backdrop {
+  z-index: 1000; /* Más alto que modal */
+}
+
+.producto-link {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.producto-link:active {
+    transform: scale(0.97); /* Se reduce un poco al presionar */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Sombra más intensa */
+}
+
+.card {
+    border-radius: 6px;
+    padding: 0;
+    background: #FFF8E1;
+    border-color: #D4A017;
+}
+
+/* Espacio reducido entre tarjetas */
+.row.g-1 > [class*="col-"] {
+    padding: 2px;

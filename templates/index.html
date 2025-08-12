@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parada Guayaka</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Efecto clic y parpadeo verde */
+        .producto-link {
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.4s ease;
+        }
+        .producto-link:active {
+            transform: scale(0.67);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        .producto-link.flash {
+            background-color: #E1A827 !important; /* Verde claro */
+            transition: background-color 0.4s ease;
+        }
+        .mini-img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body style="background-color: #E1A827;">
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-12 text-center mb-3">
+            <h1 class="titulo">Parada Guayaka</h1>
+        </div>
+    </div>
+
+<div class="row">
+    <!-- Productos en dos columnas -->
+    <div class="col-12 col-md-8">
+        {% set categorias = [
+            ('Hamburguesa', '🍔 Hamburguesas'),
+            ('Pizza Porción', '🍕 Pizza Porción'),
+            ('Doriloco', '🌮 Dorilocos'),
+            ('Adicional', '🍟 Adicionales'),
+            ('Bebida', '🥤 Bebidas'),
+            ('Pizza Entera', '🍕 Pizza Entera'),
+            ('Lasaña', '🥧 Lasaña')
+        ] %}
+
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+            {% for tipo, titulo in categorias %}
+            <div class="col">
+                <div class="producto-container mb-3 p-2">
+                    <h5 class="text-center mb-2">{{ titulo }}</h5>
+                    <div class="row g-1">
+                        {% for producto in productos %}
+                        {% if producto.tipo == tipo %}
+                        <div class="col-6 col-lg-4 d-flex">
+                            <a href="{{ url_for('agregar', producto_id=producto.id) }}" 
+                               class="card shadow-sm text-center w-100 text-decoration-none text-dark producto-link"
+                                data-id="{{ producto.id }}"
+                                data-tipo="{{ producto.tipo }}"
+                                data-nombre="{{ producto.nombre }}">
+                                <img src="{{ url_for('static', filename='img/' + producto.imagen) }}" 
+                                     class="card-img-top producto-img" alt="{{ producto.nombre }}">
+                                <div class="card-body p-1">
+                                    <p class="card-title small mb-1">{{ producto.nombre }}</p>
+                                    <p class="card-text text-success fw-bold mb-1">
+                                        ${{ '%.2f'|format(producto.precio) }}
+                                    </p>
+                                </div>
+                            </a> 
+
+<!--                             <div class="col-6 col-lg-4 d-flex">
+                            <div class="card shadow-sm text-center w-100 text-decoration-none text-dark producto-link"
+                                 data-id="{{ producto.id }}"
+                                 data-tipo="{{ producto.tipo }}"
+                                 data-nombre="{{ producto.nombre }}">
+                                <img src="{{ url_for('static', filename='img/' + producto.imagen) }}" 
+                                     class="card-img-top producto-img" alt="{{ producto.nombre }}">
+                                <div class="card-body p-1">
+                                    <p class="card-title small mb-1">{{ producto.nombre }}</p>
+                                    <p class="card-text text-success fw-bold mb-1">
+                                        ${{ '%.2f'|format(producto.precio) }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+ -->
+
+
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Carrito -->
+<!-- Carrito -->
+<div class="col-12 col-md-4">
+    <div class="card sticky-top" style="top:20px;">
+        <div class="card-body">
+            <h5 class="card-title">Carrito</h5>
+
+            <!-- 🔹 Contenedor dinámico del carrito -->
+            <div id="lista-pedidos">
+                {% if pedidos %}
+                    {% for pedido_id, items in pedidos.items() %}
+                        <div class="mb-3 border p-2 rounded pedido" data-pedido="{{ pedido_id }}">
+                            <h6 class="mb-2">Pedido #{{ pedido_id }}</h6>
+                            <ul class="list-group mb-2">
+                                {% for item in items %}
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <img src="{{ url_for('static', filename='img/' + item.imagen) }}" class="mini-img me-2">
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold">{{ item.tipo }} - {{ item.nombre }}</div>
+                                            <div class="text-success">${{ '%.2f'|format(item.precio) }}</div>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger ms-2 btn-eliminar"
+                                                data-pedido="{{ pedido_id }}"
+                                                data-indice="{{ loop.index0 }}">
+                                            X
+                                        </button>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="fw-bold text-end">
+                                Total pedido: <span class="text-success">${{ '%.2f'|format(items | sum(attribute='precio')) }}</span>
+                            </div>
+
+                            <!-- Botón cerrar y cobrar SIEMPRE visible -->
+                            <button class="btn btn-primary btn-sm mt-2 btn-cobrar" 
+                                    data-pedido="{{ pedido_id }}" 
+                                    data-total="{{ items | sum(attribute='precio') }}">
+                                Cerrar y Cobrar
+                            </button>
+
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-muted">Carrito vacío</p>
+                {% endif %}
+            </div>
+            <!-- 🔹 Fin contenedor dinámico -->
+
+            <!-- <div class="fw-bold text-end mt-3">
+                Total general: 
+                <span class="text-success" id="totalCarrito">
+                    ${{ '%.2f'|format(total_general) }}
+                </span>
+            </div> -->
+
+            <div class="d-flex gap-2 mt-3">
+                <a href="{{ url_for('nuevo_pedido') }}" class="btn btn-success w-50">Nuevo Pedido</a>
+                <a href="{{ url_for('cerrar_pedidos') }}" class="btn btn-danger w-50">Cerrar Pedidos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+
+                    <!-- Modal de selección de tamaño -->
+                        <div class="modal fade" id="modalPizza" tabindex="-1" aria-labelledby="modalPizzaLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalPizzaLabel">Elige el tamaño de Pizza</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Pequeña">
+                                      <div class="card-body text-center">
+                                        <h6>Pequeña</h6>
+                                        <p class="text-success">$4.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Mediana">
+                                      <div class="card-body text-center">
+                                        <h6>Mediana</h6>
+                                        <p class="text-success">$7.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Grande">
+                                      <div class="card-body text-center">
+                                        <h6>Grande</h6>
+                                        <p class="text-success">$14.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                 <!--  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Familiar">
+                                      <div class="card-body text-center">
+                                        <h6>Familiar</h6>
+                                        <p class="text-success">$15.00</p>
+                                      </div>
+                                    </div>
+                                  </div> -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <!-- Modal de selección de tipo Ruffles -->
+                        <div class="modal fade" id="modalRuffles" tabindex="-1" aria-labelledby="modalRufflesLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalRufflesLabel">Elige el tipo de Ruffles</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Natural">
+                                      <div class="card-body text-center">
+                                        <h6>Natural</h6>
+                                        <p class="text-success">$1.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Cebolla">
+                                      <div class="card-body text-center">
+                                        <h6>Cebolla</h6>
+                                        <p class="text-success">$1.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Picante">
+                                      <div class="card-body text-center">
+                                        <h6>Picante</h6>
+                                        <p class="text-success">$1.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                 <!--  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Familiar">
+                                      <div class="card-body text-center">
+                                        <h6>Familiar</h6>
+                                        <p class="text-success">$15.00</p>
+                                      </div>
+                                    </div>
+                                  </div> -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                        <!-- Modal de selección de tipo Papipollo -->
+                        <div class="modal fade" id="modalPapipollo" tabindex="-1" aria-labelledby="modalPapipolloLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalPapipolloLabel">Elige la presa del Papipollo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Pechuga">
+                                      <div class="card-body text-center">
+                                        <h6>Pechuga</h6>
+                                        <p class="text-success">$3.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Cadera">
+                                      <div class="card-body text-center">
+                                        <h6>Cadera</h6>
+                                        <p class="text-success">$3.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Ala">
+                                      <div class="card-body text-center">
+                                        <h6>Ala</h6>
+                                        <p class="text-success">$2.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Pierna">
+                                      <div class="card-body text-center">
+                                        <h6>Pierna</h6>
+                                        <p class="text-success">$2.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                        <!-- Modal de selección de tamaño bebida -->
+                        <div class="modal fade" id="modalBebida" tabindex="-1" aria-labelledby="modalBebidaLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalBebidaLabel">Elige el tamaño de la Bebida</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="250ml">
+                                      <div class="card-body text-center">
+                                        <h6>250ml</h6>
+                                        <p class="text-success">$0.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="500ml">
+                                      <div class="card-body text-center">
+                                        <h6>500ml</h6>
+                                        <p class="text-success">$0.75</p>
+                                      </div>
+                                    </div>
+                                  </div>
+          <!--                         <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Ala">
+                                      <div class="card-body text-center">
+                                        <h6>Ala</h6>
+                                        <p class="text-success">$2.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Pierna">
+                                      <div class="card-body text-center">
+                                        <h6>Pierna</h6>
+                                        <p class="text-success">$2.50</p>
+                                      </div>
+                                    </div>
+                                  </div> -->
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+                       <!-- Modal Cobrar -->
+                        <div class="modal fade" id="modalCobrar" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Cobrar Pedido</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                <p>Total del pedido: <strong id="totalCobrar"></strong></p>
+                                <div class="mb-3">
+                                  <label for="pagoCliente" class="form-label">Pago del cliente</label>
+                                  <input type="number" step="0.01" class="form-control" id="pagoCliente">
+                                </div>
+                                <p id="vueltoTexto" class="fw-bold"></p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" id="btnCobrar" class="btn btn-success">Cobrar</button>
+                                <button type="button" id="btnConfirmarCobro" class="btn btn-primary" disabled>Confirmar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+                        <!-- Modal Modificar -->
+                        <div class="modal fade" id="modalModificar" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Modificar Producto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+                              <div class="modal-body">
+                                <p>Producto actual: <strong id="productoActual"></strong></p>
+                                
+                                <label for="nuevoProductoSelect">Selecciona nuevo producto:</label>
+                                <select id="nuevoProductoSelect" class="form-select mb-3"></select>
+
+                                <div id="tamanoContainer" class="mb-3" style="display:none;">
+                                  <label for="tamanoSelect">Tamaño:</label>
+                                  <select id="tamanoSelect" class="form-select">
+                                    <option value="Familiar">Porcion ($ 1.50)</option>
+                                    <option value="Familiar">Pequeña ($ 4.50)</option>
+                                    <option value="Mediana">Mediana ($ 7.00)</option>
+                                    <option value="Grande">Grande ($ 14.00)</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" id="btnConfirmarModificacion" class="btn btn-primary">Confirmar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ---------- CONFIG ---------- */
+const productos = {{ productos|tojson }};
+let productoSeleccionado = null; // id del producto que se está añadiendo/modificando
+
+/* ---------- Helper: agregar via AJAX ---------- */
+function agregarProducto(id, tamano) {
+    fetch("/agregar_ajax", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ producto_id: Number(id), tamano: tamano })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) { alert(data.error); return; }
+        renderPedidos(data);
+    })
+    .catch(err => console.error(err));
+}
+
+/* ---------- Render dinámico del carrito (usa lista-pedidos) ---------- */
+function renderPedidos(data) {
+    const cont = document.getElementById("lista-pedidos");
+    if (!cont) return console.error("No existe #lista-pedidos en el DOM");
+
+    if (!data.carrito || data.carrito.length === 0) {
+        cont.innerHTML = `<p class="text-center text-muted">Carrito vacío</p>`;
+    } else {
+        cont.innerHTML = data.carrito.map(pedido => {
+            return `
+            <div class="mb-3 border p-2 rounded pedido" data-pedido="${pedido.id}">
+                <h6 class="mb-2">Pedido #${pedido.id}</h6>
+                <ul class="list-group mb-2">
+                    ${pedido.items.map((item, idx) => `
+                        <li class="list-group-item d-flex align-items-center ${item.eliminado ? 'text-muted text-decoration-line-through' : ''}">
+                            <img src="/static/img/${item.imagen}" class="mini-img me-2 ${item.eliminado ? 'opacity-50' : ''}">
+                            <div class="flex-grow-1">
+                                <div class="fw-bold">${item.tipo} - ${item.nombre}</div>
+                                <div class="text-success">$${Number(item.precio).toFixed(2)}</div>
+                            </div>
+                            ${item.eliminado ? '' : `
+                                <button class="btn btn-sm btn-outline-danger ms-2 btn-eliminar"
+                                    data-pedido="${pedido.id}"
+                                    data-indice="${idx}">X</button>
+                                <button class="btn btn-sm btn-outline-warning ms-1 btn-modificar" data-pedido="${pedido.id}" data-indice="${idx}" data-nombre="${item.nombre}">✎</button>
+                            `}
+                        </li>
+                    `).join("")}
+                </ul>
+                <div class="fw-bold text-end">Total pedido: <span class="text-success">$${Number(pedido.total).toFixed(2)}</span></div>
+                <button class="btn btn-primary btn-sm mt-2 btn-cobrar" data-pedido="${pedido.id}" data-total="${Number(pedido.total).toFixed(2)}">Cerrar y Cobrar</button>
+            </div>
+            `;
+        }).join("");
+    }
+
+    // actualizar total general si existe el elemento
+    const totalEl = document.getElementById("totalGeneral") || document.getElementById("totalCarrito");
+    if (totalEl && typeof data.total_general !== "undefined") {
+        totalEl.innerText = Number(data.total_general).toFixed(2);
+    }
+}
+
+/* ---------- Captura clicks sobre productos (delegación) ---------- */
+document.addEventListener("click", function(e) {
+    const productEl = e.target.closest(".producto-link");
+    if (!productEl) return;
+    e.preventDefault();
+
+    // efecto visual
+    productEl.classList.add("flash");
+    setTimeout(() => productEl.classList.remove("flash"), 300);
+
+    productoSeleccionado = productEl.dataset.id;
+    const tipo = productEl.dataset.tipo || "";
+
+    // Decide qué modal mostrar o si agregar directo
+    if (tipo.includes("Pizza Entera")) {
+        new bootstrap.Modal(document.getElementById("modalPizza")).show();
+    } else if (tipo === "Doriloco" && (productoSeleccionado==37 || productoSeleccionado==38 || productoSeleccionado==39)) {
+        // ejemplo: Ruffles modal si lo tienes (sustituye con tu lógica de ids)
+        const modal = document.getElementById("modalRuffles");
+        if (modal) new bootstrap.Modal(modal).show();
+        else agregarProducto(productoSeleccionado, null);
+    } else if (tipo === "Adicional" && productoSeleccionado==19) {
+        const modal = document.getElementById("modalPapipollo");
+        if (modal) new bootstrap.Modal(modal).show();
+        else agregarProducto(productoSeleccionado, null);
+    } else if (tipo === "Bebida" && (productoSeleccionado==28 || productoSeleccionado==29 || productoSeleccionado==48)) {
+        const modal = document.getElementById("modalBebida");
+        if (modal) new bootstrap.Modal(modal).show();
+        else agregarProducto(productoSeleccionado, null);
+    } else {
+        agregarProducto(productoSeleccionado, null);
+    }
+});
+
+/* ---------- Manejo de clicks en tarjetas de opción (tamaños) dentro de modales ---------- */
+document.addEventListener("click", function(e) {
+    const opcion = e.target.closest(".opcion-tamano");
+    if (!opcion) return;
+    e.preventDefault();
+
+    const tamano = opcion.dataset.tamano;
+    // Agregar el producto seleccionado con el tamaño elegido
+    if (productoSeleccionado) {
+        agregarProducto(productoSeleccionado, tamano);
+    }
+
+    // cerrar el modal donde se hizo click
+    const modalEl = opcion.closest(".modal");
+    if (modalEl) {
+        const instancia = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        instancia.hide();
+    }
+});
+
+/* ---------- Delegación para Eliminar y Modificar dentro de #lista-pedidos ---------- */
+const listaPedidosEl = document.getElementById("lista-pedidos");
+if (listaPedidosEl) {
+    listaPedidosEl.addEventListener("click", function(e) {
+        // ELIMINAR (marcar)
+        if (e.target.classList.contains("btn-eliminar")) {
+            const pedidoId = Number(e.target.dataset.pedido);
+            const indice = Number(e.target.dataset.indice);
+            fetch("/eliminar_ajax", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ pedido_id: pedidoId, indice: indice })
+            })
+            .then(r => r.json())
+            .then(data => renderPedidos(data))
+            .catch(err => console.error(err));
+            return;
+        }
+
+        // MODIFICAR -> abrir modal
+        if (e.target.classList.contains("btn-modificar")) {
+            abrirModalModificar(e.target);
+            return;
+        }
+
+        // COBRAR -> abrir modal cobro (si lo tienes)
+        if (e.target.classList.contains("btn-cobrar")) {
+            // tu lógica para abrir modalCobrar (ya la tenías), por ejemplo:
+            const pedidoId = e.target.dataset.pedido;
+            const total = Number(e.target.dataset.total);
+            document.getElementById("totalCobrar").innerText = `$${total.toFixed(2)}`;
+            document.getElementById("pagoCliente").value = "";
+            document.getElementById("vueltoTexto").innerText = "";
+            document.getElementById("btnCobrar").dataset.pedido = pedidoId;
+            new bootstrap.Modal(document.getElementById("modalCobrar")).show();
+            return;
+        }
+    });
+}
+
+/* ---------- Abrir modal de modificar (usa select que llenamos con productos) ---------- */
+function abrirModalModificar(btn) {
+    const pedidoId = Number(btn.dataset.pedido);
+    const indice = Number(btn.dataset.indice);
+    const nombre = btn.dataset.nombre || "";
+
+    document.getElementById("productoActual").innerText = nombre;
+    const btnConfirm = document.getElementById("btnConfirmarModificacion");
+    btnConfirm.dataset.pedido = pedidoId;
+    btnConfirm.dataset.indice = indice;
+
+    // Llenar select con productos disponibles
+    const select = document.getElementById("nuevoProductoSelect");
+    select.innerHTML = "";
+    productos.forEach(prod => {
+        const opt = document.createElement("option");
+        opt.value = prod.id;
+        opt.textContent = `${prod.tipo} - ${prod.nombre} ($${Number(prod.precio).toFixed(2)})`;
+        select.appendChild(opt);
+    });
+
+    // fijamos onchange con asignación directa (evita duplicados)
+    select.onchange = function() {
+        const prodSel = productos.find(p => p.id === parseInt(this.value));
+        document.getElementById("tamanoContainer").style.display = (prodSel && prodSel.tipo && prodSel.tipo.includes("Pizza Entera")) ? "block" : "none";
+    };
+
+    // disparar una vez para ajustar la visibilidad
+    select.onchange();
+
+    new bootstrap.Modal(document.getElementById("modalModificar")).show();
+}
+
+// Evento par cobrar
+document.addEventListener("click", function(e) {
+    // Abrir modal de cobro
+    if (e.target.classList.contains("btn-cobrar")) {
+        let total = parseFloat(e.target.dataset.total);
+        let pedidoId = e.target.dataset.pedido;
+        document.getElementById("totalCobrar").innerText = `$${total.toFixed(2)}`;
+        document.getElementById("pagoCliente").value = "";
+        document.getElementById("vueltoTexto").innerText = "";
+        document.getElementById("btnCobrar").dataset.pedido = pedidoId;
+        new bootstrap.Modal(document.getElementById("modalCobrar")).show();
+    }
+});
+
+// Cobrar y mostrar vuelto
+document.getElementById("btnCobrar").addEventListener("click", function() {
+    let pedidoId = this.dataset.pedido;
+    let pago = parseFloat(document.getElementById("pagoCliente").value);
+
+    fetch("/cerrar_pedido", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pedido_id: pedidoId, pago_cliente: pago })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            document.getElementById("vueltoTexto").innerText = `Vuelto: $${data.vuelto.toFixed(2)}`;
+
+            // Habilitar botón de confirmar
+            document.getElementById("btnConfirmarCobro").disabled = false;
+
+            // Actualizar carrito
+            renderPedidos(data);
+        }
+    });
+});
+
+// Confirmar y cerrar modal
+document.getElementById("btnConfirmarCobro").addEventListener("click", function() {
+    bootstrap.Modal.getInstance(document.getElementById("modalCobrar")).hide();
+    document.getElementById("pagoCliente").value = "";
+    document.getElementById("vueltoTexto").innerText = "";
+    this.disabled = true;
+});
+
+
+
+
+/* ---------- Confirmar modificación ---------- */
+document.getElementById("btnConfirmarModificacion").addEventListener("click", function() {
+    const pedidoId = Number(this.dataset.pedido);
+    const indice = Number(this.dataset.indice);
+    const nuevoProductoId = Number(document.getElementById("nuevoProductoSelect").value);
+    let tamano = null;
+    const prodSel = productos.find(p => p.id === nuevoProductoId);
+    if (prodSel && prodSel.tipo && prodSel.tipo.includes("Pizza")) {
+        tamano = document.getElementById("tamanoSelect").value;
+    }
+
+    fetch("/modificar_item", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            pedido_id: pedidoId,
+            indice: indice,
+            nuevo_producto_id: nuevoProductoId,
+            tamano: tamano
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.error) { alert(data.error); return; }
+        renderPedidos(data);
+        const modal = document.getElementById("modalModificar");
+        bootstrap.Modal.getInstance(modal)?.hide();
+    })
+    .catch(err => console.error(err));
+});
+</script>
+
+</body>
+</html>
