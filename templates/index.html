@@ -638,8 +638,9 @@ document.addEventListener("click", function(e) {
 document.getElementById("btnCobrar").addEventListener("click", function() {
     let pedidoId = this.dataset.pedido;
     let pago = parseFloat(document.getElementById("pagoCliente").value);
+    //let tamano = parseFloat(document.getElementById("tamano").value);
 
-    fetch("/cerrar_pedido", {
+    fetch("/cerrar_y_cobrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pedido_id: pedidoId, pago_cliente: pago })
@@ -658,14 +659,18 @@ document.getElementById("btnCobrar").addEventListener("click", function() {
             renderPedidos(data);
         }
     });
+    
 });
 
 // Confirmar y cerrar modal
 document.getElementById("btnConfirmarCobro").addEventListener("click", function() {
-    bootstrap.Modal.getInstance(document.getElementById("modalCobrar")).hide();
-    document.getElementById("pagoCliente").value = "";
-    document.getElementById("vueltoTexto").innerText = "";
-    this.disabled = true;
+      bootstrap.Modal.getInstance(document.getElementById("modalCobrar")).hide();
+      document.getElementById("pagoCliente").value = "";
+      document.getElementById("vueltoTexto").innerText = "";
+      this.disabled = true;
+
+   
+
 });
 
 

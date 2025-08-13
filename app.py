@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, session, request, jsonify
 from datetime import datetime
 from azure.storage.blob import BlobServiceClient
-import os, csv
+import os, csv, io
 from collections import defaultdict
 import datetime
 import time
@@ -15,9 +15,9 @@ blob_service_client = None
 container_name = "pedidos"
 blob_name = "pedidos.csv"
 
+
 if connection_string:
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-
 
 
 # Productos disponibles (id, nombre, precio, imagen en static/img)
@@ -147,31 +147,6 @@ def eliminar(pedido_id, indice):
 ##    return redirect(url_for("index"))
 
 
-@app.route("/cerrar_pedido", methods=["POST"])
-def cerrar_pedido():
-    data = request.get_json()
-    try:
-        pedido_id = int(data.get("pedido_id"))
-        pago_cliente = float(data.get("pago_cliente"))
-    except (TypeError, ValueError):
-        return jsonify({"error": "Datos inválidos"}), 400
-
-    if pedido_id not in pedidos:
-        return jsonify({"error": "Pedido no encontrado"}), 404
-
-    total_pedido = sum(item["precio"] for item in pedidos[pedido_id])
-    vuelto = pago_cliente - total_pedido
-
-    # Eliminar el pedido del diccionario
-    del pedidos[pedido_id]
-
-    return jsonify({
-        "pedido_id": pedido_id,
-        "total": total_pedido,
-        "vuelto": vuelto,
-        "carrito": generar_respuesta_carrito()["carrito"],
-        "total_general": generar_respuesta_carrito()["total_general"]
-    })
 
 
 
@@ -267,7 +242,7 @@ def agregar_ajax():
         
     #28Fiora,29fanta,48sprite
 
-    global pedidos, pedido_counter
+    #global pedidos, pedido_counter
 
 
     # Si el pedido está cerrado, no permitir agregar
@@ -304,26 +279,26 @@ def agregar_ajax():
 ##        writer = csv.writer(f, delimiter=";")
 ##        writer.writerow([fecha, hora, producto["id"], producto["tipo"], producto["nombre"], producto["precio"], tamano if tamano else "N/A"])
 ##    
-
-
-    guardar_pedido_en_blob(pedido_id, pedidos[pedido_id])
    
     return jsonify(generar_respuesta_carrito())
 
 
-def guardar_pedido_en_blob(pedido_id, pedido_items):
-    f#echa_hora = time.strftime("%d/%m/%Y %H:%M")
+def guardar_pedido_en_blob(pedido_id, pedido_items, tamano):
+
+    #fecha_hora = time.strftime("%d/%m/%Y %H:%M")
     # 📌 Fecha y hora con time.strftime()
     fecha = time.strftime("%d-%m-%Y")
     hora = time.strftime("%H:%M:%S")
-    nombre_archivo = f"pedido_{pedido_id}.csv"
+    nombre_archivo = "pedidos.csv"
 
     # Crear CSV en memoria
     output = io.StringIO()
     writer = csv.writer(output, delimiter=";")
     
     #writer.writerow(["Fecha", "Hora", "PedidoID", "Tipo", "Producto", "Precio", "Tamano"])
-
+    contenido_actual = ""
+    contenido_final = ""
+    
     if blob_service_client:
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
         try:
@@ -335,28 +310,39 @@ def guardar_pedido_en_blob(pedido_id, pedido_items):
 
 
     total_pedido = sum(item["precio"] for item in pedido_items if not item.get("eliminado", False))
+    
     for item in pedido_items:
         if not item.get("eliminado", False):
             nombre_final = item["nombre"]
-            if item.get("tamano"):
-                nombre_final += f" ({item['tamano']})"
-                writer.writerow([fecha, hora, producto["id"], producto["tipo"], producto["nombre"], producto["precio"], tamano if tamano else "N/A"])
+            #if item.get("tamano"):
+            #    tamano = tamano
+            #else:
+            #    tamano= "N/A"
+            writer.writerow([fecha, hora, pedido_id, item["tipo"], nombre_final, item["precio"], tamano])
+            #output.write([fecha, hora, producto["id"], producto["tipo"], producto["nombre"], producto["precio"], tamano if tamano else "N/A"])
 
+    # Ir al inicio antes de subir
+    contenido_final = output.getvalue()
 
     # Subir el CSV actualizado a Blob Storage
     if blob_service_client:
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
-        blob_client.upload_blob(output.getvalue(), overwrite=True)
+        blob_client.upload_blob(contenido_final, overwrite=True)
         print(f"Pedido {pedido_id} guardado en Azure Blob Storage ({blob_name})")
     else:
         # Guardado local si no hay conexión a Azure
-        archivo_csv = "pedidos.csv"
-        with open(archivo_csv, mode="a", newline="", encoding="utf-8") as file:
-            local_writer = csv.writer(file, delimiter=";")
-            if os.stat(archivo_csv).st_size == 0:
-                local_writer.writerow(["FechaHora", "PedidoID", "Producto", "Precio", "Total", "PagoCliente", "Vuelto"])
-            file.write(output.getvalue())
-        print(f"Pedido {pedido_id} guardado en local ({archivo_csv})")
+        with open(blob_name, "w", newline="", encoding="utf-8") as f:
+            f.write(contenido_final)
+        print(f"💾 Pedido {pedido_id} guardado localmente en {blob_name}")
+        
+##        with open(nombre_archivo, mode="a", newline="", encoding="utf-8") as file:
+##            local_writer = csv.writer(file, delimiter=";")
+##            if os.stat(nombre_archivo).st_size == 0:
+##                #local_writer.writerow(["FechaHora", "PedidoID", "Producto", "Precio", "Total", "PagoCliente", "Vuelto"])
+##                file.write(contenido_final)
+##        print(f"Pedido {pedido_id} guardado en local ({archivo_csv})")
+
+    
 
 
 
@@ -384,7 +370,8 @@ def cerrar_y_cobrar():
     data = request.get_json()
     try:
         pedido_id = int(data.get("pedido_id"))
-        tipo = int(data.get("tipo"))
+        #tipo = data.get("tipo")
+        tamano = "" #str(data.get("tamano"))
         pago_cliente = float(data.get("pago_cliente"))
     except (TypeError, ValueError):
         return jsonify({"error": "Datos inválidos"}), 400
@@ -393,14 +380,49 @@ def cerrar_y_cobrar():
         return jsonify({"error": "Pedido no encontrado"}), 404
 
     # Calcular total del pedido
-    total_pedido = sum(item["precio"] for item in pedidos[pedido_id] if not item["eliminado"])
+    total_pedido = sum(item["precio"] for item in pedidos[pedido_id])
     vuelto = pago_cliente - total_pedido
+
+    guardar_pedido_en_blob(pedido_id, pedidos[pedido_id], tamano)
 
 
     # Eliminar pedido de la memoria después de cobrar
+    #pedidos[pedido_id] = []
+    
     del pedidos[pedido_id]
 
-    return jsonify({"success": True, "vuelto": vuelto, "carrito": generar_respuesta_carrito(contar_eliminados=True)})
+    #return jsonify({"success": True, "vuelto": vuelto, "carrito": generar_respuesta_carrito(contar_eliminados=True), "pedidos": pedidos})
+    #return jsonify(generar_respuesta_carrito())
+    respuesta = generar_respuesta_carrito()
+    respuesta["vuelto"] = vuelto
+    return jsonify(respuesta)
+
+
+@app.route("/cerrar_pedido", methods=["POST"])
+def cerrar_pedido():
+    data = request.get_json()
+    try:
+        pedido_id = int(data.get("pedido_id"))
+        pago_cliente = float(data.get("pago_cliente"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "Datos inválidos"}), 400
+
+    if pedido_id not in pedidos:
+        return jsonify({"error": "Pedido no encontrado"}), 404
+
+    total_pedido = sum(item["precio"] for item in pedidos[pedido_id])
+    vuelto = pago_cliente - total_pedido
+
+    # Eliminar el pedido del diccionario
+    del pedidos[pedido_id]
+
+    return jsonify({
+        "pedido_id": pedido_id,
+        "total": total_pedido,
+        "vuelto": vuelto,
+        "carrito": generar_respuesta_carrito()["carrito"],
+        "total_general": generar_respuesta_carrito()["total_general"]
+    })
 
 
 
