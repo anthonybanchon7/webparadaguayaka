@@ -58,6 +58,28 @@ body { background: #E1A827; background-color: #E1A827;}
   z-index: 1050; /* Muy bajo */
 }
 
+.chk-sabor {
+    display: none; /* ocultamos el checkbox nativo */
+}
+
+.label-sabor {
+    display: block;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.chk-sabor:checked + .label-sabor {
+    background-color: #E1A827;
+    color: white;
+    border-color: #E1A827;
+}
+
+
 .modal-backdrop {
   z-index: 1000; /* Más alto que modal */
 }

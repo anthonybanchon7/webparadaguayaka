@@ -5,6 +5,8 @@ import os, csv, io
 from collections import defaultdict
 import datetime
 import time
+from zoneinfo import ZoneInfo
+
 
 app = Flask(__name__)
 app.secret_key = "cambiar_esta_clave_por_una_segura"
@@ -15,7 +17,7 @@ blob_service_client = None
 container_name = "pedidos"
 blob_name = "pedidos.csv"
 
-
+connection_string = "DefaultEndpointsProtocol=https;AccountName=rpastorageaccountrpa;AccountKey=eF8T2q0lWtwV8koJgkg6UXaVPMEGSsRgnp6//WbQ1mEnpAL72EJjM+lJdfE+sD+axPOOq1jZOm07arpk11BWng==;EndpointSuffix=core.windows.net"
 if connection_string:
     blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
@@ -44,9 +46,9 @@ productos = [
     {"id": 37, "nombre": "Carne", "precio": 1.50, "imagen": "ruffles.png", "tipo": "Doriloco"},
     {"id": 38, "nombre": "Pollo", "precio": 1.75, "imagen": "ruffles.png", "tipo": "Doriloco"},
     {"id": 39, "nombre": "Mixto", "precio": 2.00, "imagen": "ruffles.png", "tipo": "Doriloco"},
-    {"id": 40, "nombre": "Carne", "precio": 1.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
-    {"id": 41, "nombre": "Pollo", "precio": 1.75, "imagen": "rapidito.png", "tipo": "Doriloco"},
-    {"id": 42, "nombre": "Mixto", "precio": 2.00, "imagen": "rapidito.png", "tipo": "Doriloco"},
+    {"id": 40, "nombre": "Carne", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
+    {"id": 41, "nombre": "Pollo", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
+    {"id": 42, "nombre": "Mixto", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
     {"id": 19, "nombre": "Papipollo", "precio": 3.00, "imagen": "papipollo.png", "tipo": "Adicional"},
     {"id": 20, "nombre": "Salchipapa", "precio": 1.50, "imagen": "salchi.png", "tipo": "Adicional"},
     {"id": 21, "nombre": "Tocino", "precio": 0.75, "imagen": "tocino.png", "tipo": "Adicional"},
@@ -69,7 +71,8 @@ productos = [
     {"id": 33, "nombre": "La Vacona", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
     {"id": 34, "nombre": "PolloChampi", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
     {"id": 35, "nombre": "Tocinetona", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 36, "nombre": "Hawaiaca", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"}
+    {"id": 36, "nombre": "Hawaiaca", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 49, "nombre": "Personalizada", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"}
 ]
 
 pedidos = {}  # {pedido_id: [ {nombre, precio, imagen, eliminado?}, ... ] }
@@ -208,6 +211,7 @@ def agregar_ajax():
         return jsonify({"error": "ID de producto inválido"}), 400
 
     tamano = data.get("tamano")
+    sabores = data.get("sabores", [])
 
     # Buscar producto
     producto = next((p for p in productos if p["id"] == producto_id), None)
@@ -223,6 +227,8 @@ def agregar_ajax():
             precio_final = 7.00
         elif tamano == "Grande":
             precio_final = 14.00
+        elif tamano == "Personal":
+            precio_final = 2.00
 
     if producto["tipo"] == "Adicional" and producto["id"]==19 and tamano:
         if tamano == "Pechuga":
@@ -258,11 +264,23 @@ def agregar_ajax():
         pedidos[pedido_counter] = []
     pedido_id = max(pedidos.keys())
 
+    sabores_texto = "Sabores:<br>"
+
+    if sabores:
+        sabores_texto = sabores_texto + "<br>".join(f"• {s}" for s in sabores)
+        nombre_completo = f"{producto['nombre']}{f' ({tamano})' if tamano else ''}<br>{sabores_texto}"
+    else:
+        nombre_completo = f"{producto['nombre']}{f' ({tamano})' if tamano else ''}"
+
+
+
     nuevo_item = {
-        "nombre": producto["nombre"] + (f" ({tamano})" if tamano else ""),
+        #"nombre": producto["nombre"] + (f" ({tamano})" if tamano else ""),
+        "nombre": nombre_completo,
         "precio": precio_final,
         "imagen": producto["imagen"],
         "tipo": producto["tipo"]
+        
     }
 
     pedidos[pedido_id].append(nuevo_item)
@@ -287,8 +305,13 @@ def guardar_pedido_en_blob(pedido_id, pedido_items, tamano):
 
     #fecha_hora = time.strftime("%d/%m/%Y %H:%M")
     # 📌 Fecha y hora con time.strftime()
-    fecha = time.strftime("%d-%m-%Y")
-    hora = time.strftime("%H:%M:%S")
+    
+    now = datetime.datetime.now(ZoneInfo("America/Guayaquil"))
+
+    
+    fecha = now.strftime("%d-%m-%Y")
+    hora = now.strftime("%H:%M:%S")
+    
     nombre_archivo = "pedidos.csv"
 
     # Crear CSV en memoria
@@ -430,54 +453,30 @@ def cerrar_pedido():
 @app.route("/modificar_item", methods=["POST"])
 def modificar_item():
     data = request.get_json()
-    try:
-        pedido_id = int(data.get("pedido_id"))
-        indice = int(data.get("indice"))
-        nuevo_producto_id = int(data.get("nuevo_producto_id"))
-        tamano = data.get("tamano")
-    except (TypeError, ValueError):
-        return jsonify({"error": "Datos inválidos"}), 400
+    pedido_id = int(data.get("pedido_id"))
+    item_index = int(data.get("item_index"))
+    tamano = data.get("tamano")
+    sabores = data.get("sabores", [])
 
-    if pedido_id not in pedidos or indice < 0 or indice >= len(pedidos[pedido_id]):
-        return jsonify({"error": "Producto no encontrado en pedido"}), 404
+    if pedido_id not in pedidos or item_index >= len(pedidos[pedido_id]):
+        return jsonify({"error": "Pedido o producto no encontrado"}), 400
 
-    nuevo_producto = next((p for p in productos if p["id"] == nuevo_producto_id), None)
-    if not nuevo_producto:
-        return jsonify({"error": "Nuevo producto no encontrado"}), 404
+    # Actualizar en memoria
+    item = pedidos[pedido_id][item_index]
+    item["tamano"] = tamano
+    item["sabores"] = sabores
 
-    precio_final = nuevo_producto["precio"]
-    if nuevo_producto["tipo"] == "Pizza Entera" and tamano:
-        if tamano == "Pequeña":
-            precio_final = 4.50
-        elif tamano == "Mediana":
-            precio_final = 7.00
-        elif tamano == "Grande":
-            precio_final = 14.00
-    if nuevo_producto["tipo"] == "Adicional" and nuevo_producto["id"]==19 and tamano:
-        if tamano == "Pechuga":
-            precio_final = 3.00
-        elif tamano == "Cadera":
-            precio_final = 3.00
-        elif tamano == "Ala":
-            precio_final = 2.50
-        elif tamano == "Pierna":
-            precio_final = 2.50
-    if nuevo_producto["tipo"] == "Bebida" and (nuevo_producto["id"]==28 or nuevo_producto["id"]==29 or nuevo_producto["id"]==48) and tamano:
-        if tamano == "250ml":
-            precio_final = 0.50
-        elif tamano == "500ml":
-            precio_final = 0.75
-    
+    # Si quieres actualizar el nombre visible
+    if sabores:
+        sabores_texto = "\n".join(f"• {s}" for s in sabores)
+        item["nombre"] = f"{item['nombre'].split(' (')[0]} ({tamano})\n{sabores_texto}"
+    else:
+        item["nombre"] = f"{item['nombre'].split(' (')[0]} ({tamano})"
 
-    pedidos[pedido_id][indice] = {
-        "nombre": nuevo_producto["nombre"] + (f" ({tamano})" if tamano else ""),
-        "precio": precio_final,
-        "imagen": nuevo_producto["imagen"],
-        "tipo": nuevo_producto["tipo"],
-        "eliminado": False
-    }
+    # Si cambia el precio
+    item["precio"] = calcular_precio(item["nombre"], tamano)
 
-    return jsonify(generar_respuesta_carrito(contar_eliminados=True))
+    return jsonify({"success": True, "pedidos": pedidos})
 
 
 

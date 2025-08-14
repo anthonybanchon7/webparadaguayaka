@@ -31,7 +31,7 @@
 <div class="container-fluid py-3">
     <div class="row">
         <div class="col-12 text-center mb-3">
-            <h1 class="titulo">Parada Guayaka v1</h1>
+            <h1 class="titulo">Parada Guayaka</h1>
         </div>
     </div>
 
@@ -166,7 +166,7 @@
 </div>
 </div>
 
-
+                    
                     <!-- Modal de selección de tamaño -->
                         <div class="modal fade" id="modalPizza" tabindex="-1" aria-labelledby="modalPizzaLabel" aria-hidden="true">
                           <div class="modal-dialog modal-lg">
@@ -201,14 +201,104 @@
                                       </div>
                                     </div>
                                   </div>
-                                 <!--  <div class="col-6 col-md-3">
-                                    <div class="card opcion-tamano" data-tamano="Familiar">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Personal">
                                       <div class="card-body text-center">
-                                        <h6>Familiar</h6>
-                                        <p class="text-success">$15.00</p>
+                                        <h6>Personal</h6>
+                                        <p class="text-success">$2.00</p>
                                       </div>
                                     </div>
-                                  </div> -->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                    <!-- Modal de selección de tamaño -->
+                        <div class="modal fade" id="modalPizzaP" tabindex="-1" aria-labelledby="modalPizzaPLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalPizzaLabel">Elige el Tamaño/Ingredientes de la Pizza</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Pequeña">
+                                      <div class="card-body text-center">
+                                        <h6>Pequeña</h6>
+                                        <p class="text-success">$4.50</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Mediana">
+                                      <div class="card-body text-center">
+                                        <h6>Mediana</h6>
+                                        <p class="text-success">$7.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Grande">
+                                      <div class="card-body text-center">
+                                        <h6>Grande</h6>
+                                        <p class="text-success">$14.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="Personal">
+                                      <div class="card-body text-center">
+                                        <h6>Personal</h6>
+                                        <p class="text-success">$2.00</p>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                                    <h6>Sabores</h6>
+                                        <div class="row">
+                                          <div class="col-6 col-md-3">
+                                            <!-- <label>
+                                              <input type="checkbox" class="chk-sabor" value="Margarita Guayaca"> Margarita Guayaca
+                                            </label> -->
+                                            <input type="checkbox" id="sabor1" class="chk-sabor" value="Margarita Guayaca">
+                                            <label for="sabor1" class="label-sabor">Margarita Guayaca</label>
+                                          </div>
+                                          <div class="col-6 col-md-3">
+                                            <input type="checkbox" id="sabor2" class="chk-sabor" value="Don Pepperoni">
+                                            <label for="sabor2" class="label-sabor">Don Pepperoni</label>
+                                          </div>
+                                          <div class="col-6 col-md-3">
+                                            <input type="checkbox" id="sabor3" class="chk-sabor" value="La Salamera">
+                                            <label for="sabor3" class="label-sabor">La Salamera</label>
+                                          </div>
+                                          <div class="col-6 col-md-3">
+                                            <input type="checkbox" id="sabor4" class="chk-sabor" value="Pollo Champi">
+                                            <label for="sabor4" class="label-sabor">Pollo Champi</label>
+                                          </div>
+                                          <div class="col-6 col-md-3">
+                                            <input type="checkbox" id="sabor5" class="chk-sabor" value="Tocinetona">
+                                            <label for="sabor5" class="label-sabor">Tocinetona</label>
+                                          </div>
+                                          <div class="col-6 col-md-3">
+                                            <input type="checkbox" id="sabor6" class="chk-sabor" value="Hawaiaca">
+                                            <label for="sabor6" class="label-sabor">Hawaiaca</label>
+                                          </div>
+                                          <div class="col-6 col-md-3">
+                                            <input type="checkbox" id="sabor7" class="chk-sabor" value="Vacona">
+                                            <label for="sabor7" class="label-sabor">Vacona</label>
+                                          </div>
+                                        </div>
+                                        <!-- <div class="modal-footer">
+                                                <button id="btnConfirmarPizzaPersonalizada" class="btn btn-success">Agregar</button>
+                                        </div> -->
+
                                 </div>
                               </div>
                             </div>
@@ -419,7 +509,7 @@
                                 </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" id="btnConfirmarModificacion" class="btn btn-primary">Confirmar</button>
+                                <button type="button" id="btnGuardarModificacion" class="btn btn-primary">Confirmar</button>
                               </div>
                             </div>
                           </div>
@@ -436,11 +526,11 @@ const productos = {{ productos|tojson }};
 let productoSeleccionado = null; // id del producto que se está añadiendo/modificando
 
 /* ---------- Helper: agregar via AJAX ---------- */
-function agregarProducto(id, tamano) {
+function agregarProducto(id, tamano, sabores = []) {
     fetch("/agregar_ajax", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ producto_id: Number(id), tamano: tamano })
+        body: JSON.stringify({ producto_id: Number(id), tamano: tamano, sabores: sabores })
     })
     .then(res => res.json())
     .then(data => {
@@ -467,7 +557,7 @@ function renderPedidos(data) {
                         <li class="list-group-item d-flex align-items-center ${item.eliminado ? 'text-muted text-decoration-line-through' : ''}">
                             <img src="/static/img/${item.imagen}" class="mini-img me-2 ${item.eliminado ? 'opacity-50' : ''}">
                             <div class="flex-grow-1">
-                                <div class="fw-bold">${item.tipo} - ${item.nombre}</div>
+                                <div class="fw-bold">${item.tipo} - ${item.nombre} </div>
                                 <div class="text-success">$${Number(item.precio).toFixed(2)}</div>
                             </div>
                             ${item.eliminado ? '' : `
@@ -493,27 +583,45 @@ function renderPedidos(data) {
     }
 }
 
+
+
+// Selección visual del tamaño
+document.querySelectorAll("#modalPizzaP .opcion-tamano").forEach(card => {
+    card.addEventListener("click", function() {
+        document.querySelectorAll("#modalPizzaP .opcion-tamano").forEach(el => el.classList.remove("selected"));
+        this.classList.add("selected");
+    });
+});
+
+
 /* ---------- Captura clicks sobre productos (delegación) ---------- */
 document.addEventListener("click", function(e) {
     const productEl = e.target.closest(".producto-link");
+
     if (!productEl) return;
     e.preventDefault();
 
     // efecto visual
     productEl.classList.add("flash");
-    setTimeout(() => productEl.classList.remove("flash"), 300);
+    setTimeout(() => productEl.classList.remove("flash"), 100);
 
     productoSeleccionado = productEl.dataset.id;
     const tipo = productEl.dataset.tipo || "";
 
     // Decide qué modal mostrar o si agregar directo
+    // if (tipo.includes("Pizza Entera")) {
     if (tipo.includes("Pizza Entera")) {
-        new bootstrap.Modal(document.getElementById("modalPizza")).show();
+        if (productoSeleccionado==49) {
+            new bootstrap.Modal(document.getElementById("modalPizzaP")).show();
+        } else {
+            new bootstrap.Modal(document.getElementById("modalPizza")).show();
+        }
+
     } else if (tipo === "Doriloco" && (productoSeleccionado==37 || productoSeleccionado==38 || productoSeleccionado==39)) {
         // ejemplo: Ruffles modal si lo tienes (sustituye con tu lógica de ids)
         const modal = document.getElementById("modalRuffles");
         if (modal) new bootstrap.Modal(modal).show();
-        else agregarProducto(productoSeleccionado, null);
+        else agregarProducto(productoSeleccionado, null); //AQUI
     } else if (tipo === "Adicional" && productoSeleccionado==19) {
         const modal = document.getElementById("modalPapipollo");
         if (modal) new bootstrap.Modal(modal).show();
@@ -530,14 +638,34 @@ document.addEventListener("click", function(e) {
 /* ---------- Manejo de clicks en tarjetas de opción (tamaños) dentro de modales ---------- */
 document.addEventListener("click", function(e) {
     const opcion = e.target.closest(".opcion-tamano");
+    const saboresSel = Array.from(document.querySelectorAll("#modalPizzaP .chk-sabor:checked")).map(cb => cb.value);
+
     if (!opcion) return;
     e.preventDefault();
+
+    
+    if (productoSeleccionado==49){
+        if (saboresSel.length === 0) {
+            alert("Debes elegir tamaño y al menos un sabor.");
+            return;
+        }
+    }
+    
+
 
     const tamano = opcion.dataset.tamano;
     // Agregar el producto seleccionado con el tamaño elegido
     if (productoSeleccionado) {
-        agregarProducto(productoSeleccionado, tamano);
+        agregarProducto(productoSeleccionado, tamano, saboresSel);
     }
+
+
+    // Limpia la selección de tamaño
+    document.querySelectorAll("#modalPizzaP .opcion-tamano").forEach(el => el.classList.remove("selected"));
+
+    // Limpia los checkboxes
+    document.querySelectorAll("#modalPizzaP .chk-sabor").forEach(cb => cb.checked = false);
+
 
     // cerrar el modal donde se hizo click
     const modalEl = opcion.closest(".modal");
@@ -545,6 +673,9 @@ document.addEventListener("click", function(e) {
         const instancia = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
         instancia.hide();
     }
+
+
+
 });
 
 /* ---------- Delegación para Eliminar y Modificar dentro de #lista-pedidos ---------- */
@@ -567,10 +698,10 @@ if (listaPedidosEl) {
         }
 
         // MODIFICAR -> abrir modal
-        if (e.target.classList.contains("btn-modificar")) {
-            abrirModalModificar(e.target);
-            return;
-        }
+        //if (e.target.classList.contains("btn-modificar")) {
+        //    abrirModalModificar(e.target);
+        //    return;
+        //}
 
         // COBRAR -> abrir modal cobro (si lo tienes)
         if (e.target.classList.contains("btn-cobrar")) {
@@ -587,36 +718,37 @@ if (listaPedidosEl) {
     });
 }
 
+
+
+
+
 /* ---------- Abrir modal de modificar (usa select que llenamos con productos) ---------- */
 function abrirModalModificar(btn) {
-    const pedidoId = Number(btn.dataset.pedido);
-    const indice = Number(btn.dataset.indice);
-    const nombre = btn.dataset.nombre || "";
+    if (!btn) return;
 
-    document.getElementById("productoActual").innerText = nombre;
-    const btnConfirm = document.getElementById("btnConfirmarModificacion");
-    btnConfirm.dataset.pedido = pedidoId;
-    btnConfirm.dataset.indice = indice;
+    const pedidoId = btn.dataset.pedidoId;
+    const itemIndex = btn.dataset.itemIndex;
 
-    // Llenar select con productos disponibles
-    const select = document.getElementById("nuevoProductoSelect");
-    select.innerHTML = "";
-    productos.forEach(prod => {
-        const opt = document.createElement("option");
-        opt.value = prod.id;
-        opt.textContent = `${prod.tipo} - ${prod.nombre} ($${Number(prod.precio).toFixed(2)})`;
-        select.appendChild(opt);
+    // Guardar referencias
+    document.getElementById("modPedidoId").value = pedidoId;
+    document.getElementById("modItemIndex").value = itemIndex;
+
+    // Obtener datos actuales del producto
+    const nombre = btn.dataset.nombre;
+    const tamano = btn.dataset.tamano || "";
+    const sabores = btn.dataset.sabores ? btn.dataset.sabores.split(",") : [];
+
+    // Mostrar en el modal
+    document.getElementById("modNombre").textContent = nombre;
+    document.querySelectorAll("#modalModificar .opcion-tamano").forEach(el => {
+        el.classList.toggle("selected", el.dataset.tamano === tamano);
+    });
+    
+    document.querySelectorAll("#modalModificar .chk-sabor").forEach(cb => {
+        cb.checked = sabores.includes(cb.value);
     });
 
-    // fijamos onchange con asignación directa (evita duplicados)
-    select.onchange = function() {
-        const prodSel = productos.find(p => p.id === parseInt(this.value));
-        document.getElementById("tamanoContainer").style.display = (prodSel && prodSel.tipo && prodSel.tipo.includes("Pizza Entera")) ? "block" : "none";
-    };
-
-    // disparar una vez para ajustar la visibilidad
-    select.onchange();
-
+    // Abrir modal
     new bootstrap.Modal(document.getElementById("modalModificar")).show();
 }
 
@@ -674,37 +806,79 @@ document.getElementById("btnConfirmarCobro").addEventListener("click", function(
 });
 
 
+// Confirmar pizza personalizada
+document.getElementById("btnConfirmarPizzaPersonalizada").addEventListener("click", function() {
+    const tamanoSel = document.querySelector("#modalPizzaP .opcion-tamano.selected")?.dataset.tamano;
+    const saboresSel = Array.from(document.querySelectorAll("#modalPizzaP .chk-sabor:checked")).map(cb => cb.value);
+
+    if (!tamanoSel || saboresSel.length === 0) {
+        alert("Debes elegir tamaño y al menos un sabor.");
+        return;
+    }
+
+    agregarProducto(productoSeleccionado, tamanoSel, saboresSel);
+    bootstrap.Modal.getInstance(document.getElementById("modalPizzaP")).hide();
+});
+
+
+// Delegación de eventos para abrir el modal de modificación
+document.addEventListener("click", function (e) {
+    const btn = e.target.closest(".btn-modificar");
+    if (!btn) return;
+
+    const pedidoId = btn.dataset.pedidoId;
+    const itemIndex = btn.dataset.itemIndex;
+
+    // Guardar referencias
+    document.getElementById("modPedidoId").value = pedidoId;
+    document.getElementById("modItemIndex").value = itemIndex;
+
+    // Obtener datos actuales del producto
+    const nombre = btn.dataset.nombre;
+    const tamano = btn.dataset.tamano || "";
+    const sabores = btn.dataset.sabores ? btn.dataset.sabores.split(",") : [];
+
+    // Mostrar en el modal
+    document.getElementById("modNombre").textContent = nombre;
+    document.querySelectorAll("#modalModificar .opcion-tamano").forEach(el => {
+        el.classList.toggle("selected", el.dataset.tamano === tamano);
+    });
+    document.querySelectorAll("#modalModificar .chk-sabor").forEach(cb => {
+        cb.checked = sabores.includes(cb.value);
+    });
+
+    // Abrir modal
+    new bootstrap.Modal(document.getElementById("modalModificar")).show();
+});
+
 
 
 /* ---------- Confirmar modificación ---------- */
-document.getElementById("btnConfirmarModificacion").addEventListener("click", function() {
-    const pedidoId = Number(this.dataset.pedido);
-    const indice = Number(this.dataset.indice);
-    const nuevoProductoId = Number(document.getElementById("nuevoProductoSelect").value);
-    let tamano = null;
-    const prodSel = productos.find(p => p.id === nuevoProductoId);
-    if (prodSel && prodSel.tipo && prodSel.tipo.includes("Pizza")) {
-        tamano = document.getElementById("tamanoSelect").value;
-    }
+document.getElementById("btnGuardarModificacion").addEventListener("click", function() {
+
+const pedidoId = document.getElementById("modPedidoId").value;
+    const itemIndex = document.getElementById("modItemIndex").value;
+
+    const tamanoSel = document.querySelector("#modalModificar .opcion-tamano.selected")?.dataset.tamano || "";
+    const saboresSel = Array.from(document.querySelectorAll("#modalModificar .chk-sabor:checked")).map(cb => cb.value);
 
     fetch("/modificar_item", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             pedido_id: pedidoId,
-            indice: indice,
-            nuevo_producto_id: nuevoProductoId,
-            tamano: tamano
+            item_index: itemIndex,
+            tamano: tamanoSel,
+            sabores: saboresSel
         })
     })
-    .then(r => r.json())
-    .then(data => {
-        if (data.error) { alert(data.error); return; }
-        renderPedidos(data);
-        const modal = document.getElementById("modalModificar");
-        bootstrap.Modal.getInstance(modal)?.hide();
-    })
-    .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(data => {
+            renderPedidos(data.pedidos);
+            bootstrap.Modal.getInstance(document.getElementById("modalModificar")).hide();
+        })
+        .catch(err => console.error(err));
+
 });
 </script>
 
