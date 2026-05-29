@@ -40,11 +40,12 @@
     <div class="col-12 col-md-8">
         {% set categorias = [
             ('Hamburguesa', '🍔 Hamburguesas'),
-            ('Pizza Porción', '🍕 Pizza Porción'),
+            ('papas', '🍟 Varios'),
+            ('Bandejitas', '🍕 Bandejitas'),
             ('Doriloco', '🌮 Dorilocos'),
-            ('Adicional', '🍟 Adicionales'),
+            ('Adicional', '➕ Adicionales'),
             ('Bebida', '🥤 Bebidas'),
-            ('Pizza Entera', '🍕 Pizza Entera'),
+            ('Pizza Entera', '🍕 Pizza'),
             ('Lasaña', '🥧 Lasaña')
         ] %}
 
@@ -267,7 +268,7 @@
                                     <div class="card opcion-tamano" data-tamano="Mediana">
                                       <div class="card-body text-center">
                                         <h6>Mediana</h6>
-                                        <p class="text-success">$7.00</p>
+                                        <p class="text-success">$6.00</p>
                                       </div>
                                     </div>
                                   </div>
@@ -275,7 +276,7 @@
                                     <div class="card opcion-tamano" data-tamano="Grande">
                                       <div class="card-body text-center">
                                         <h6>Grande</h6>
-                                        <p class="text-success">$14.00</p>
+                                        <p class="text-success">$10.50</p>
                                       </div>
                                     </div>
                                   </div>
@@ -283,7 +284,7 @@
                                     <div class="card opcion-tamano" data-tamano="Personal">
                                       <div class="card-body text-center">
                                         <h6>Personal</h6>
-                                        <p class="text-success">$2.00</p>
+                                        <p class="text-success">$2.25</p>
                                       </div>
                                     </div>
                                   </div>
@@ -317,15 +318,15 @@
                                     <div class="card opcion-tamano" data-tamano="Mediana">
                                       <div class="card-body text-center">
                                         <h6>Mediana</h6>
-                                        <p class="text-success">$7.00</p>
+                                        <p class="text-success">$6.00</p>
                                       </div>
                                     </div>
                                   </div>
                                   <div class="col-6 col-md-3">
                                     <div class="card opcion-tamano" data-tamano="Grande">
                                       <div class="card-body text-center">
-                                        <h6>Grande</h6>
-                                        <p class="text-success">$14.00</p>
+                                        <h6>Familiar</h6>
+                                        <p class="text-success">$10.50</p>
                                       </div>
                                     </div>
                                   </div>
@@ -333,7 +334,7 @@
                                     <div class="card opcion-tamano" data-tamano="Personal">
                                       <div class="card-body text-center">
                                         <h6>Personal</h6>
-                                        <p class="text-success">$2.00</p>
+                                        <p class="text-success">$2.25</p>
                                       </div>
                                     </div>
                                   </div>
@@ -345,32 +346,32 @@
                                             <!-- <label>
                                               <input type="checkbox" class="chk-sabor" value="Margarita Guayaca"> Margarita Guayaca
                                             </label> -->
-                                            <input type="checkbox" id="sabor1" class="chk-sabor" value="Margarita Guayaca">
-                                            <label for="sabor1" class="label-sabor">Margarita Guayaca</label>
+                                            <input type="checkbox" id="sabor1" class="chk-sabor" value="Jamón">
+                                            <label for="sabor1" class="label-sabor">Jamón</label>
                                           </div>
                                           <div class="col-6 col-md-3">
-                                            <input type="checkbox" id="sabor2" class="chk-sabor" value="Don Pepperoni">
-                                            <label for="sabor2" class="label-sabor">Don Pepperoni</label>
+                                            <input type="checkbox" id="sabor2" class="chk-sabor" value="Pepperoni">
+                                            <label for="sabor2" class="label-sabor">Pepperoni</label>
                                           </div>
                                           <div class="col-6 col-md-3">
-                                            <input type="checkbox" id="sabor3" class="chk-sabor" value="La Salamera">
-                                            <label for="sabor3" class="label-sabor">La Salamera</label>
+                                            <input type="checkbox" id="sabor3" class="chk-sabor" value="Salami">
+                                            <label for="sabor3" class="label-sabor">Salami</label>
                                           </div>
                                           <div class="col-6 col-md-3">
-                                            <input type="checkbox" id="sabor4" class="chk-sabor" value="Pollo Champi">
-                                            <label for="sabor4" class="label-sabor">Pollo Champi</label>
+                                            <input type="checkbox" id="sabor4" class="chk-sabor" value="Pollo">
+                                            <label for="sabor4" class="label-sabor">Pollo</label>
                                           </div>
                                           <div class="col-6 col-md-3">
                                             <input type="checkbox" id="sabor5" class="chk-sabor" value="Tocinetona">
                                             <label for="sabor5" class="label-sabor">Tocinetona</label>
                                           </div>
                                           <div class="col-6 col-md-3">
-                                            <input type="checkbox" id="sabor6" class="chk-sabor" value="Hawaiaca">
-                                            <label for="sabor6" class="label-sabor">Hawaiaca</label>
+                                            <input type="checkbox" id="sabor6" class="chk-sabor" value="Hawaiana">
+                                            <label for="sabor6" class="label-sabor">Hawaiana</label>
                                           </div>
                                           <div class="col-6 col-md-3">
-                                            <input type="checkbox" id="sabor7" class="chk-sabor" value="Vacona">
-                                            <label for="sabor7" class="label-sabor">Vacona</label>
+                                            <input type="checkbox" id="sabor7" class="chk-sabor" value="Carne">
+                                            <label for="sabor7" class="label-sabor">Carne</label>
                                           </div>
                                         </div>
                                         <!-- <div class="modal-footer">
@@ -497,7 +498,7 @@
                                   <div class="col-6 col-md-3">
                                     <div class="card opcion-tamano" data-tamano="250ml">
                                       <div class="card-body text-center">
-                                        <h6>250ml</h6>
+                                        <h6>300ml</h6>
                                         <p class="text-success">$0.50</p>
                                       </div>
                                     </div>
@@ -510,22 +511,40 @@
                                       </div>
                                     </div>
                                   </div>
-          <!--                         <div class="col-6 col-md-3">
-                                    <div class="card opcion-tamano" data-tamano="Ala">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                        <!-- Modal de selección de tamaño bebida Coca -->
+                        <div class="modal fade" id="modalBebidaCoca" tabindex="-1" aria-labelledby="modalBebidaCocaLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalBebidaCocaLabel">Elige el tamaño de la Bebida</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col-6 col-md-3">
+                                    <div class="card opcion-tamano" data-tamano="250ml">
                                       <div class="card-body text-center">
-                                        <h6>Ala</h6>
-                                        <p class="text-success">$2.50</p>
+                                        <h6>300ml</h6>
+                                        <p class="text-success">$0.60</p>
                                       </div>
                                     </div>
                                   </div>
                                   <div class="col-6 col-md-3">
-                                    <div class="card opcion-tamano" data-tamano="Pierna">
+                                    <div class="card opcion-tamano" data-tamano="500ml">
                                       <div class="card-body text-center">
-                                        <h6>Pierna</h6>
-                                        <p class="text-success">$2.50</p>
+                                        <h6>500ml</h6>
+                                        <p class="text-success">$1.00</p>
                                       </div>
                                     </div>
-                                  </div> -->
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -884,12 +903,16 @@ document.addEventListener("click", function(e) {
         const modal = document.getElementById("modalRuffles");
         if (modal) new bootstrap.Modal(modal).show();
         else agregarProducto(productoSeleccionado, null); //AQUI
-    } else if (tipo === "Adicional" && productoSeleccionado==19) {
+    } else if (tipo === "papas" && productoSeleccionado==19) {
         const modal = document.getElementById("modalPapipollo");
         if (modal) new bootstrap.Modal(modal).show();
         else agregarProducto(productoSeleccionado, null);
-    } else if (tipo === "Bebida" && (productoSeleccionado==28 || productoSeleccionado==29 || productoSeleccionado==48)) {
+    } else if (tipo === "Bebida" && (productoSeleccionado==28 || productoSeleccionado==29 || productoSeleccionado==48 || productoSeleccionado==61)) {
         const modal = document.getElementById("modalBebida");
+        if (modal) new bootstrap.Modal(modal).show();
+        else agregarProducto(productoSeleccionado, null);
+    } else if (tipo === "Bebida" && (productoSeleccionado==27)) {
+        const modal = document.getElementById("modalBebidaCoca");
         if (modal) new bootstrap.Modal(modal).show();
         else agregarProducto(productoSeleccionado, null);
     } else {

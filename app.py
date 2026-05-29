@@ -32,17 +32,31 @@ productos = [
     {"id": 3, "nombre": "Goyena", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
     {"id": 4, "nombre": "Guayaka", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
     {"id": 5, "nombre": "La 21", "precio": 4.00, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 43, "nombre": "Pollo", "precio": 4.00, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 6, "nombre": "Margarita Guayaca", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
-    {"id": 7, "nombre": "Don Peperoni", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
-    {"id": 8, "nombre": "La Salamera", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
-    {"id": 9, "nombre": "La Vacona", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
-    {"id": 10, "nombre": "PolloChampi", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
-    {"id": 11, "nombre": "Tocinetona", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
+    {"id": 43, "nombre": "El Oro (Pollo)", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 50, "nombre": "Vacas Galindo", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+
+    {"id": 51, "nombre": "Porción Papas", "precio": 1.00, "imagen": "papas.png", "tipo": "papas"},
+    {"id": 52, "nombre": "Salchipapa", "precio": 1.50, "imagen": "salchi.png", "tipo": "papas"},
+    {"id": 53, "nombre": "Papas Pulled Pork", "precio": 2.50, "imagen": "papaspulled.png", "tipo": "papas"},
+    {"id": 54, "nombre": "Papas Chilli Chesse", "precio": 2.50, "imagen": "papaschesse.png", "tipo": "papas"},
+    {"id": 19, "nombre": "Papipollo", "precio": 3.00, "imagen": "papipollo.png", "tipo": "papas"},
+    {"id": 55, "nombre": "Choripan (Del Astillero)", "precio": 2.25, "imagen": "choripan.png", "tipo": "papas"},
+    {"id": 56, "nombre": "Hot Dog (Sin Verguenza - chilli chesse)", "precio": 2.00, "imagen": "hotdogchilli.png", "tipo": "papas"},
+    {"id": 57, "nombre": "Hot Dog (Sencillo)", "precio": 1.50, "imagen": "hotdog.png", "tipo": "papas"},
+
+    {"id": 6, "nombre": "Ñengosa (carne)", "precio": 2.50, "imagen": "bandeja3.png", "tipo": "Bandejitas"},
+    {"id": 7, "nombre": "Pelucona (Pollo)", "precio": 2.50, "imagen": "bandeja3.png", "tipo": "Bandejitas"},
+    {"id": 8, "nombre": "Cholaza (Chorizo)", "precio": 2.50, "imagen": "bandeja3.png", "tipo": "Bandejitas"},
+    {"id": 9, "nombre": "Fulleteada (Mixta)", "precio": 3.00, "imagen": "bandeja3.png", "tipo": "Bandejitas"},
+    #{"id": 10, "nombre": "PolloChampi", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
+    #{"id": 11, "nombre": "Tocinetona", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
     #{"id": 12, "nombre": "Hawaiaca", "precio": 1.50, "imagen": "pizza.png", "tipo": "Pizza Porción"},
+
+
     {"id": 13, "nombre": "Carne", "precio": 4.50, "imagen": "lasaña.png", "tipo": "Lasaña"},
     {"id": 14, "nombre": "Pollo", "precio": 4.50, "imagen": "lasaña.png", "tipo": "Lasaña"},
     {"id": 15, "nombre": "Mixto", "precio": 5.00, "imagen": "lasaña.png", "tipo": "Lasaña"},
+
     {"id": 16, "nombre": "Carne", "precio": 1.50, "imagen": "dori.png", "tipo": "Doriloco"},
     {"id": 17, "nombre": "Pollo", "precio": 1.75, "imagen": "dori.png", "tipo": "Doriloco"},
     {"id": 18, "nombre": "Mixto", "precio": 2.00, "imagen": "dori.png", "tipo": "Doriloco"},
@@ -51,30 +65,38 @@ productos = [
     {"id": 39, "nombre": "Mixto", "precio": 2.00, "imagen": "ruffles.png", "tipo": "Doriloco"},
     {"id": 40, "nombre": "Carne", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
     {"id": 41, "nombre": "Pollo", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
-    {"id": 42, "nombre": "Mixto", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
-    {"id": 19, "nombre": "Papipollo", "precio": 3.00, "imagen": "papipollo.png", "tipo": "Adicional"},
-    {"id": 20, "nombre": "Salchipapa", "precio": 1.50, "imagen": "salchi.png", "tipo": "Adicional"},
+    #{"id": 42, "nombre": "Mixto", "precio": 2.50, "imagen": "rapidito.png", "tipo": "Doriloco"},
+    
+    #{"id": 20, "nombre": "Salchipapa", "precio": 1.50, "imagen": "salchi.png", "tipo": "Adicional"},
     {"id": 21, "nombre": "Tocino", "precio": 0.75, "imagen": "tocino.png", "tipo": "Adicional"},
     {"id": 22, "nombre": "Salchicha", "precio": 0.75, "imagen": "salchicha.png", "tipo": "Adicional"},
     {"id": 23, "nombre": "Cheddar", "precio": 0.50, "imagen": "cheddar.png", "tipo": "Adicional"},
-    {"id": 24, "nombre": "Piña", "precio": 0.50, "imagen": "piña.png", "tipo": "Adicional"},
+    {"id": 24, "nombre": "Piña", "precio": 0.25, "imagen": "piña.png", "tipo": "Adicional"},
     {"id": 25, "nombre": "Huevo", "precio": 0.50, "imagen": "huevo.png", "tipo": "Adicional"},
-    {"id": 44, "nombre": "Papas", "precio": 1.00, "imagen": "papas.png", "tipo": "Adicional"},
+    #{"id": 44, "nombre": "Papas", "precio": 1.00, "imagen": "papas.png", "tipo": "Adicional"},
     {"id": 45, "nombre": "Carne", "precio": 0.50, "imagen": "carne.png", "tipo": "Adicional"},
     {"id": 46, "nombre": "Pollo", "precio": 0.50, "imagen": "pollo.png", "tipo": "Adicional"},
-    {"id": 47, "nombre": "Pulled Pork", "precio": 0.50, "imagen": "pork.png", "tipo": "Adicional"},
-    {"id": 26, "nombre": "Agua", "precio": 0.50, "imagen": "agua.png", "tipo": "Bebida"},
+    #{"id": 47, "nombre": "Pulled Pork", "precio": 0.50, "imagen": "pork.png", "tipo": "Adicional"},
+
+    
     {"id": 27, "nombre": "Coca Cola Ori", "precio": 0.60, "imagen": "cola.png", "tipo": "Bebida"},
-    {"id": 28, "nombre": "Fiora", "precio": 0.50, "imagen": "fiora.png", "tipo": "Bebida"},
-    {"id": 29, "nombre": "Fanta", "precio": 0.75, "imagen": "fanta.png", "tipo": "Bebida"},
-    {"id": 48, "nombre": "Sprite", "precio": 0.75, "imagen": "sprite.png", "tipo": "Bebida"},
-    {"id": 30, "nombre": "Margarita Guayaca", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 31, "nombre": "Don Peperoni", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 32, "nombre": "La Salamera", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 33, "nombre": "La Vacona", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 34, "nombre": "PolloChampi", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 35, "nombre": "Tocinetona", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
-    {"id": 36, "nombre": "Hawaiaca", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 28, "nombre": "Fioravanti", "precio": 0.50, "imagen": "fiora.png", "tipo": "Bebida"},
+    {"id": 29, "nombre": "Fanta", "precio": 0.50, "imagen": "fanta.png", "tipo": "Bebida"},
+    {"id": 48, "nombre": "Sprite", "precio": 0.50, "imagen": "sprite.png", "tipo": "Bebida"},
+    {"id": 62, "nombre": "Coca Cola Zero (500ml)", "precio": 0.75, "imagen": "cola.png", "tipo": "Bebida"},
+    {"id": 61, "nombre": "Inca Cola", "precio": 0.50, "imagen": "inca.png", "tipo": "Bebida"},
+    {"id": 58, "nombre": "Jugo Mora", "precio": 0.75, "imagen": "mora.png", "tipo": "Bebida"},
+    {"id": 59, "nombre": "Jugo Frutilla", "precio": 0.75, "imagen": "frutilla.png", "tipo": "Bebida"},
+    {"id": 60, "nombre": "Fuze Tea (550ml)", "precio": 0.75, "imagen": "fuzetea.png", "tipo": "Bebida"},
+
+
+    {"id": 30, "nombre": "Jamón", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 31, "nombre": "Peperoni", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 32, "nombre": "Salami", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 33, "nombre": "Carne", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 34, "nombre": "Pollo", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    #{"id": 35, "nombre": "Tocinetona", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
+    {"id": 36, "nombre": "Hawaiana", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
     {"id": 49, "nombre": "Personalizada", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"}
 ]
 
@@ -371,11 +393,11 @@ def agregar_ajax():
         if tamano == "Pequeña":
             precio_final = 4.50
         elif tamano == "Mediana":
-            precio_final = 7.00
+            precio_final = 6.00
         elif tamano == "Grande":
-            precio_final = 14.00
+            precio_final = 10.50
         elif tamano == "Personal":
-            precio_final = 2.00
+            precio_final = 2.25
 
     if producto["tipo"] == "Adicional" and producto["id"]==19 and tamano:
         if tamano == "Pechuga":
@@ -388,10 +410,16 @@ def agregar_ajax():
             precio_final = 2.50
 
     if producto["tipo"] == "Bebida" and (producto["id"]==28 or producto["id"]==29 or producto["id"]==48) and tamano:
-        if tamano == "250ml":
+        if tamano == "300ml":
             precio_final = 0.50
         elif tamano == "500ml":
             precio_final = 0.75
+
+    if producto["tipo"] == "Bebida" and (producto["id"]==27) and tamano:
+        if tamano == "300ml":
+            precio_final = 0.50
+        elif tamano == "500ml":
+            precio_final = 1.00
         
     #28Fiora,29fanta,48sprite
 
