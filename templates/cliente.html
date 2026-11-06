@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hacer Pedido - Parada Guayaka</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AQUÍ ENLAZAMOS TU HOJA DE ESTILOS PARA QUE SE VEA IGUAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body style="background-color: #E1A827;">
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-12 text-center mb-3">
+            <h1 class="titulo">Parada Guayaka - Tu Pedido</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Productos agrupados en categorías, usando tu mismo diseño -->
+        <div class="col-12 col-md-8">
+            {% set categorias = [
+                ('Hamburguesa', '🍔 Hamburguesas'),
+                ('varios', '🍟 Varios'),
+                ('Bandejitas', '🍕 Bandejitas'),
+                ('Doriloco', '🌮 Dorilocos'),
+                ('Adicional', '➕ Adicionales'),
+                ('Bebida', '🥤 Bebidas'),
+                ('Pizza Entera', '🍕 Pizza'),
+                ('Lasaña', '🥧 Lasaña')
+            ] %}
+
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+                {% for tipo, titulo in categorias %}
+                <div class="col">
+                    <div class="producto-container mb-3 p-2">
+                        <h5 class="text-center mb-2">{{ titulo }}</h5>
+                        <div class="row g-1">
+                            {% for producto in productos %}
+                            {% if producto.tipo == tipo %}
+                            <div class="col-6 col-lg-4 d-flex">
+                                <!-- Tarjeta idéntica a la principal, pero con onclick para el carrito local -->
+                                <div class="card shadow-sm text-center w-100 text-decoration-none text-dark producto-link"
+                                     style="cursor: pointer;"
+                                     onclick="agregarAlCarritoCliente('{{ producto.nombre }}', {{ producto.precio }}, '{{ producto.imagen }}', '{{ producto.tipo }}')">
+                                    <img src="{{ url_for('static', filename='img/' + producto.imagen) }}" 
+                                         class="card-img-top producto-img" alt="{{ producto.nombre }}">
+                                    <div class="card-body p-1">
+                                        <p class="card-title small mb-1">{{ producto.nombre }}</p>
+                                        <p class="card-text text-success fw-bold mb-1">
+                                            ${{ '%.2f'|format(producto.precio) }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Carrito Individual (Privado) adaptado a tu estilo -->
+        <div class="col-12 col-md-4 mt-4 mt-md-0">
+            <div class="card sticky-top" style="top:20px;">
+                <div class="card-body">
+                    <h5 class="text-center mb-2">🛒 Mi Carrito</h5>
+                    
+                    <div id="lista-pedidos">
+                        <ul id="listaMiCarrito" class="list-group mb-3">
+                            <p class="text-muted text-center mt-2">Aún no has agregado productos</p>
+                        </ul>
+                    </div>
+
+                    <div class="fw-bold text-end mt-3">
+                        Total: <span id="totalMiCarrito" class="text-success">$0.00</span>
+                    </div>
+
+                    <div class="mt-3 mb-2">
+                        <input type="text" class="form-control border-primary" id="nombreCliente" placeholder="✍️ Ingresa tu nombre aquí...">
+                    </div>
+
+                    <button id="btnEnviarPedido" class="btn btn-primary w-100 mt-3" onclick="enviarPedidoCaja()">🛒 Enviar Pedido a Caja</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let carritoCliente = [];
+
+    function agregarAlCarritoCliente(nombre, precio, imagen, tipo) {
+        carritoCliente.push({ nombre, precio, imagen, tipo });
+        renderCarritoCliente();
+    }
+
+    function renderCarritoCliente() {
+        const lista = document.getElementById("listaMiCarrito");
+        const totalEl = document.getElementById("totalMiCarrito");
+        
+        if(carritoCliente.length === 0){
+            lista.innerHTML = '<p class="text-muted text-center mt-2">Aún no has agregado productos</p>';
+            totalEl.innerText = "$0.00";
+            return;
+        }
+
+        let html = "";
+        let total = 0;
+        carritoCliente.forEach((item, index) => {
+            total += item.precio;
+            // Estilo del carrito idéntico al de la caja
+            html += `
+                <li class="list-group-item d-flex align-items-center">
+                    <img src="/static/img/${item.imagen}" class="mini-img me-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-bold" style="font-size: 0.9rem;">${item.tipo} - ${item.nombre}</div>
+                        <div class="text-success">$${item.precio.toFixed(2)}</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger ms-2" onclick="eliminarDelCarritoCliente(${index})">❌</button>
+                </li>
+            `;
+        });
+        
+        lista.innerHTML = html;
+        totalEl.innerText = `$${total.toFixed(2)}`;
+    }
+
+    function eliminarDelCarritoCliente(index) {
+        carritoCliente.splice(index, 1);
+        renderCarritoCliente();
+    }
+
+    function enviarPedidoCaja() {
+        if (carritoCliente.length === 0) {
+            alert("Agrega productos antes de enviar.");
+            return;
+        }
+
+        // NUEVO: Capturar y validar el nombre
+        const nombreCliente = document.getElementById("nombreCliente").value.trim();
+        if (!nombreCliente) {
+            alert("Por favor, ingresa tu nombre para identificar tu pedido.");
+            document.getElementById("nombreCliente").focus();
+            return;
+        }
+
+        const btn = document.getElementById("btnEnviarPedido");
+        btn.disabled = true;
+        btn.innerText = "Enviando...";
+
+        fetch("/enviar_pedido_cliente", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // Añadimos el nombre_cliente a la información que se envía al servidor
+            body: JSON.stringify({ 
+                items: carritoCliente,
+                nombre_cliente: nombreCliente 
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                alert(`¡Gracias ${nombreCliente}! Tu pedido #${data.pedido_id} ha sido enviado a la caja.`);
+                carritoCliente = [];
+                document.getElementById("nombreCliente").value = ""; // Limpiar el nombre
+                renderCarritoCliente();
+            } else {
+                alert("Hubo un error al enviar tu pedido.");
+            }
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerText = "🛒 Enviar Pedido a Caja";
+        });
+    }
+</script>
+</body>
+</html>

@@ -41,10 +41,10 @@
         {% set categorias = [
             ('Hamburguesa', '🍔 Hamburguesas'),
             ('varios', '🍟 Varios'),
-            ('Bandejitas', '🍕 Bandejitas'),
-            ('Doriloco', '🌮 Dorilocos'),
             ('Adicional', '➕ Adicionales'),
             ('Bebida', '🥤 Bebidas'),
+            ('Bandejitas', '🍕 Bandejitas'),
+            ('Doriloco', '🌮 Dorilocos'),
             ('Pizza Entera', '🍕 Pizza'),
             ('Lasaña', '🥧 Lasaña')
         ] %}
@@ -112,8 +112,20 @@
             <div id="lista-pedidos">
                 {% if pedidos %}
                     {% for pedido_id, items in pedidos.items() %}
-                        <div class="mb-3 border p-2 rounded pedido" data-pedido="{{ pedido_id }}">
-                            <h6 class="mb-2">Pedido #{{ pedido_id }}</h6>
+                        {% set es_cliente = items|length > 0 and items[0].get('origen') == 'cliente' %}
+                        {% set nombre_cliente = items[0].get('cliente_nombre', '') if es_cliente else '' %}
+                        {% set confirmado = items[0].get('confirmado', True) if items else True %}
+                        <div class="mb-3 p-2 rounded pedido {{ 'border-danger bg-danger bg-opacity-10' if es_cliente else 'border' }}" data-pedido="{{ pedido_id }}">
+                            <h6 class="mb-2">
+                                Pedido #{{ pedido_id }} 
+                                {% if es_cliente %}
+                                    <span class="badge bg-danger ms-2">👤 Cliente: {{ nombre_cliente }}</span>
+                                    {% if confirmado %}
+                                        <span class="badge bg-success ms-1">✅ Confirmado</span>
+                                    {% endif %}
+                                {% endif %}
+                            </h6>
+                            <!--<h6 class="mb-2">Pedido #{{ pedido_id }}</h6> -->
                             <ul class="list-group mb-2">
                                 {% for item in items %}
                                     <li class="list-group-item d-flex align-items-center">
@@ -134,30 +146,35 @@
                                 Total pedido: <span class="text-success">${{ '%.2f'|format(items | sum(attribute='precio')) }}</span>
                             </div>
 
-                            <!-- Botón cerrar y cobrar SIEMPRE visible -->
+                            <!-- Lógica de botones de Confirmación vs Acciones normales -->
+                            {% set confirmado = items[0].get('confirmado', True) if items else True %}
+                            
                             <div class="d-flex gap-1 mt-2 w-100" align-items-stretch">
-                                <button class="btn btn-secondary btn-sm flex-grow-1 btn-agregar-productos"
-                                        data-pedido="{{ pedido_id }}">
-                                    ✏️ Agregar
-                                </button>
-                                <button class="btn btn-primary btn-sm flex-grow-1 btn-cobrar" 
-                                        data-pedido="{{ pedido_id }}" 
-                                        data-total="{{ items | sum(attribute='precio') }}">
-                                    💵 Cobrar
-                                </button>
-                                <button class="btn btn-dark btn-sm px-3 btn-imprimir" 
-                                        data-pedido="{{ pedido_id }}">
-                                    🖨️ Imprimir
-                                </button>
-                                 <!-- <button class="btn btn-danger btn-sm mt-2 btn-eliminar-pedido" 
-                                          data-pedido="{{ pedido_id }}">
-                                    🗑️ Eliminar
-                                </button> 
-                                <button class="btn btn-danger btn-sm mt-2 btn-eliminar-pedido" 
-                                    data-pedido="${pedido.id}">
-                                    🗑️ Eliminar
-                                </button> -->
+                                {% if not confirmado %}
+                                    <!-- Botón único si no está confirmado -->
+                                    <button class="btn btn-warning btn-sm w-100 fw-bold btn-confirmar-pedido" 
+                                            data-pedido="{{ pedido_id }}">
+                                        ✅ Confirmar Pedido
+                                    </button>
+                                {% else %}
+                                    <!-- Botones tradicionales -->
+                                    <button class="btn btn-secondary btn-sm flex-grow-1 btn-agregar-productos"
+                                            data-pedido="{{ pedido_id }}">
+                                        ✏️ Agregar
+                                    </button>
+                                    <button class="btn btn-primary btn-sm flex-grow-1 btn-cobrar" 
+                                            data-pedido="{{ pedido_id }}" 
+                                            data-total="{{ items | sum(attribute='precio') }}">
+                                        💵 Cobrar
+                                    </button>
+                                    <button class="btn btn-dark btn-sm px-3 btn-imprimir" 
+                                            data-pedido="{{ pedido_id }}">
+                                        🖨️ Imprimir
+                                    </button>
+                                {% endif %}
                             </div>
+
+
                         </div>
                     {% endfor %}
                 {% else %}
@@ -803,12 +820,51 @@ function renderPedidos(data) {
         cont.innerHTML = `<p class="text-center text-muted">Carrito vacío</p>`;
     } else {
         cont.innerHTML = data.carrito.map(pedido => {
-            return `
-            <div class="mb-3 border p-2 rounded pedido" data-pedido="${pedido.id}">
-                <h6 class="mb-2">Pedido #${pedido.id}</h6>
-                <ul class="list-group mb-2">
-                    ${pedido.items.map((item, idx) => `
-                        <li class="list-group-item d-flex align-items-center ${item.eliminado ? 'text-muted text-decoration-line-through' : ''}">
+          // 1. Detectar origen, nombre y estado
+          const esCliente = pedido.items.length > 0 && pedido.items[0].origen === 'cliente';
+          const nombreCliente = esCliente ? pedido.items[0].cliente_nombre : '';
+          const confirmado = pedido.items.length > 0 ? (pedido.items[0].confirmado !== false) : true;
+          const claseFondo = esCliente ? 'border-danger bg-danger bg-opacity-10' : 'border';
+          
+          // 2. Construir las etiquetas dinámicamente
+          let badges = '';
+          if (esCliente) {
+              badges += `<span class="badge bg-danger ms-2">👤 Cliente: ${nombreCliente}</span>`;
+              if (confirmado) {
+                  badges += `<span class="badge bg-success ms-1">✅ Confirmado</span>`;
+              }
+          }
+
+          // Generar los botones dinámicamente
+          let botonesHtml = "";
+          if (!confirmado) {
+              botonesHtml = `
+                  <button class="btn btn-warning btn-sm w-100 fw-bold btn-confirmar-pedido" data-pedido="${pedido.id}">
+                      ✅ Confirmar Pedido
+                  </button>
+              `;
+          } else {
+              botonesHtml = `
+                  <button class="btn btn-secondary btn-sm flex-grow-1 btn-agregar-productos" data-pedido="${pedido.id}">
+                      ✏️ Agregar
+                  </button>
+                  <div class="d-flex gap-1">
+                      <button class="btn btn-primary btn-sm flex-grow-1 btn-cobrar" data-pedido="${pedido.id}" data-total="${Number(pedido.total).toFixed(2)}">
+                          💵 Cobrar
+                      </button>
+                      <button class="btn btn-dark btn-sm px-3 btn-imprimir" data-pedido="${pedido.id}">
+                          🖨️ Imprimir
+                      </button>
+                  </div>
+              `;
+          }
+
+          return `
+          <div class="mb-3 p-2 rounded pedido ${claseFondo}" data-pedido="${pedido.id}">
+              <h6 class="mb-2">Pedido #${pedido.id}${badges}</h6>
+              <ul class="list-group mb-2">
+                  ${pedido.items.map((item, idx) => `
+                      <li class="list-group-item d-flex align-items-center ${item.eliminado ? 'text-muted text-decoration-line-through' : ''}">
                             <img src="/static/img/${item.imagen}" class="mini-img me-2 ${item.eliminado ? 'opacity-50' : ''}">
                             <div class="flex-grow-1">
                                 <div class="fw-bold">${item.tipo} - ${item.nombre} </div>
@@ -824,22 +880,8 @@ function renderPedidos(data) {
                     `).join("")}
                 </ul>
                 <div class="fw-bold text-end">Total pedido: <span class="text-success">$${Number(pedido.total).toFixed(2)}</span></div>
-                    <div class="d-flex gap-1 mt-2 w-100" align-items-stretch">
-                        <button class="btn btn-secondary btn-sm flex-grow-1 btn-agregar-productos" 
-                                data-pedido="${pedido.id}">
-                            ✏️ Agregar
-                        </button>
-                        <div class="d-flex gap-1">
-                        <button class="btn btn-primary btn-sm flex-grow-1 btn-cobrar" 
-                            data-pedido="${pedido.id}" 
-                            data-total="${Number(pedido.total).toFixed(2)}">
-                            💵 Cobrar
-                        </button>
-                        <button class="btn btn-dark btn-sm px-3 btn-imprimir" 
-                            data-pedido="${pedido.id}">
-                            🖨️ Imprimir
-                        </button>
-                    </div>
+                <div class="d-flex gap-1 mt-2 w-100" align-items-stretch">
+                    ${botonesHtml}
                 </div>
             </div>
             `;
@@ -967,6 +1009,26 @@ document.addEventListener("click", function(e) {
 const listaPedidosEl = document.getElementById("lista-pedidos");
 if (listaPedidosEl) {
     listaPedidosEl.addEventListener("click", function(e) {
+
+        // 0. BOTÓN CONFIRMAR PEDIDO (NUEVO)
+        const btnConfirmar = e.target.closest(".btn-confirmar-pedido");
+        if (btnConfirmar) {
+            e.preventDefault();
+            const pedidoId = btnConfirmar.dataset.pedido;
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerText = "Confirmando...";
+            
+            fetch("/confirmar_pedido", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ pedido_id: pedidoId })
+            })
+            .then(r => r.json())
+            .then(data => renderPedidos(data))
+            .catch(err => console.error(err));
+            return;
+        }
+
         // 1. BOTÓN IMPRIMIR 🖨️
         const btnImprimir = e.target.closest(".btn-imprimir");
         if (btnImprimir) {

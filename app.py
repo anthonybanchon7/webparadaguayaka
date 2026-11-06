@@ -27,22 +27,22 @@ if connection_string:
 
 # Productos disponibles (id, nombre, precio, imagen en static/img)
 productos = [
-    {"id": 1, "nombre": "Bolivia", "precio": 2.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 2, "nombre": "Portete", "precio": 3.00, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 3, "nombre": "Goyena", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 4, "nombre": "Guayaka", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 5, "nombre": "La 21", "precio": 4.00, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 43, "nombre": "El Oro (Pollo)", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
-    {"id": 50, "nombre": "Vacas Galindo", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 1, "nombre": "Bolivia", "precio": 2.75, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 2, "nombre": "Portete", "precio": 3.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 3, "nombre": "Goyena", "precio": 4.00, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 4, "nombre": "Guayaka", "precio": 4.00, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 5, "nombre": "La 21", "precio": 4.50, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 43, "nombre": "El Oro (Pollo)", "precio": 3.75, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
+    {"id": 50, "nombre": "Vacas Galindo", "precio": 3.75, "imagen": "hamburguesa.png", "tipo": "Hamburguesa"},
 
     {"id": 51, "nombre": "Porción Papas", "precio": 1.00, "imagen": "papas.png", "tipo": "varios"},
-    {"id": 52, "nombre": "Salchipapa", "precio": 1.50, "imagen": "salchi.png", "tipo": "varios"},
-    {"id": 53, "nombre": "Papas Pulled Pork", "precio": 2.50, "imagen": "papaspulled.png", "tipo": "varios"},
-    {"id": 54, "nombre": "Papas Chilli Chesse", "precio": 2.50, "imagen": "papaschesse.png", "tipo": "varios"},
-    {"id": 63, "nombre": "Papipollo", "precio": 2.50, "imagen": "papipollo.png", "tipo": "varios"},
-    {"id": 55, "nombre": "Choripan (Del Astillero)", "precio": 2.25, "imagen": "choripan.png", "tipo": "varios"},
-    {"id": 56, "nombre": "Hot Dog (Sin Verguenza - chilli chesse)", "precio": 2.00, "imagen": "hotdogchilli.png", "tipo": "varios"},
-    {"id": 57, "nombre": "Hot Dog (Sencillo)", "precio": 1.50, "imagen": "hotdog.png", "tipo": "varios"},
+    {"id": 52, "nombre": "Salchipapa", "precio": 1.75, "imagen": "salchi.png", "tipo": "varios"},
+    {"id": 53, "nombre": "Papas Pulled Pork", "precio": 3.00, "imagen": "papaspulled.png", "tipo": "varios"},
+    {"id": 54, "nombre": "Papas Chilli Chesse", "precio": 3.00, "imagen": "papaschesse.png", "tipo": "varios"},
+    {"id": 63, "nombre": "Papipollo", "precio": 2.75, "imagen": "papipollo.png", "tipo": "varios"},
+    {"id": 55, "nombre": "Choripan Argentino", "precio": 3.00, "imagen": "choripan.png", "tipo": "varios"},
+    #{"id": 56, "nombre": "Hot Dog (Sin Verguenza - chilli chesse)", "precio": 2.00, "imagen": "hotdogchilli.png", "tipo": "varios"},
+    #{"id": 57, "nombre": "Hot Dog (Sencillo)", "precio": 1.50, "imagen": "hotdog.png", "tipo": "varios"},
 
     {"id": 6, "nombre": "Ñengosa (carne)", "precio": 2.50, "imagen": "bandeja3.png", "tipo": "Bandejitas"},
     {"id": 7, "nombre": "Pelucona (Pollo)", "precio": 2.50, "imagen": "bandeja3.png", "tipo": "Bandejitas"},
@@ -69,25 +69,28 @@ productos = [
     
     #{"id": 20, "nombre": "Salchipapa", "precio": 1.50, "imagen": "salchi.png", "tipo": "Adicional"},
     {"id": 21, "nombre": "Tocino", "precio": 0.75, "imagen": "tocino.png", "tipo": "Adicional"},
-    {"id": 22, "nombre": "Salchicha", "precio": 0.75, "imagen": "salchicha.png", "tipo": "Adicional"},
+    {"id": 22, "nombre": "Porción Salchicha", "precio": 0.75, "imagen": "salchicha.png", "tipo": "Adicional"},
     {"id": 23, "nombre": "Cheddar", "precio": 0.50, "imagen": "cheddar.png", "tipo": "Adicional"},
-    {"id": 24, "nombre": "Piña", "precio": 0.25, "imagen": "piña.png", "tipo": "Adicional"},
+    #{"id": 24, "nombre": "Piña", "precio": 0.25, "imagen": "piña.png", "tipo": "Adicional"},
     {"id": 25, "nombre": "Huevo", "precio": 0.50, "imagen": "huevo.png", "tipo": "Adicional"},
     #{"id": 44, "nombre": "Papas", "precio": 1.00, "imagen": "papas.png", "tipo": "Adicional"},
-    {"id": 45, "nombre": "Carne", "precio": 0.50, "imagen": "carne.png", "tipo": "Adicional"},
-    {"id": 46, "nombre": "Pollo", "precio": 0.50, "imagen": "pollo.png", "tipo": "Adicional"},
+    {"id": 45, "nombre": "Carne", "precio": 1.00, "imagen": "carne.png", "tipo": "Adicional"},
+    {"id": 46, "nombre": "Pollo", "precio": 1.00, "imagen": "pollo.png", "tipo": "Adicional"},
     #{"id": 47, "nombre": "Pulled Pork", "precio": 0.50, "imagen": "pork.png", "tipo": "Adicional"},
+    {"id": 64, "nombre": "Pepinillo", "precio": 0.50, "imagen": "pepinillo.png", "tipo": "Adicional"},
+    {"id": 65, "nombre": "Aderezo Relish", "precio": 0.50, "imagen": "relish.png", "tipo": "Adicional"},
+    {"id": 66, "nombre": "Chimichurri Guayaco", "precio": 0.75, "imagen": "chimichurri.png", "tipo": "Adicional"},
 
     
-    {"id": 27, "nombre": "Coca Cola Ori", "precio": 0.60, "imagen": "cola.png", "tipo": "Bebida"},
-    {"id": 28, "nombre": "Fioravanti", "precio": 0.50, "imagen": "fiora.png", "tipo": "Bebida"},
-    {"id": 29, "nombre": "Fanta", "precio": 0.50, "imagen": "fanta.png", "tipo": "Bebida"},
-    {"id": 48, "nombre": "Sprite", "precio": 0.50, "imagen": "sprite.png", "tipo": "Bebida"},
-    {"id": 62, "nombre": "Coca Cola Zero (500ml)", "precio": 0.75, "imagen": "cola.png", "tipo": "Bebida"},
-    {"id": 61, "nombre": "Inca Cola", "precio": 0.50, "imagen": "inca.png", "tipo": "Bebida"},
-    {"id": 58, "nombre": "Jugo Mora", "precio": 0.75, "imagen": "mora.png", "tipo": "Bebida"},
-    {"id": 59, "nombre": "Jugo Frutilla", "precio": 0.75, "imagen": "frutilla.png", "tipo": "Bebida"},
-    {"id": 60, "nombre": "Fuze Tea (550ml)", "precio": 0.75, "imagen": "fuzetea.png", "tipo": "Bebida"},
+    {"id": 27, "nombre": "Coca Cola", "precio": 1.00, "imagen": "cola.png", "tipo": "Bebida"},
+    {"id": 28, "nombre": "Fioravanti", "precio": 0.75, "imagen": "fiora.png", "tipo": "Bebida"},
+    {"id": 29, "nombre": "Fanta", "precio": 0.75, "imagen": "fanta.png", "tipo": "Bebida"},
+    {"id": 48, "nombre": "Sprite", "precio": 0.75, "imagen": "sprite.png", "tipo": "Bebida"},
+    #{"id": 62, "nombre": "Coca Cola Zero (500ml)", "precio": 0.75, "imagen": "cola.png", "tipo": "Bebida"},
+    #{"id": 61, "nombre": "Inca Cola", "precio": 0.50, "imagen": "inca.png", "tipo": "Bebida"},
+    #{"id": 58, "nombre": "Jugo Mora", "precio": 0.75, "imagen": "mora.png", "tipo": "Bebida"},
+    #{"id": 59, "nombre": "Jugo Frutilla", "precio": 0.75, "imagen": "frutilla.png", "tipo": "Bebida"},
+    {"id": 60, "nombre": "Fuze Tea (550ml)", "precio": 1.00, "imagen": "fuzetea.png", "tipo": "Bebida"},
 
 
     {"id": 30, "nombre": "Jamón", "precio": 14.00, "imagen": "pizzaent.png", "tipo": "Pizza Entera"},
@@ -650,8 +653,60 @@ def modificar_item():
     return jsonify({"success": True, "pedidos": pedidos})
 
 
+@app.route("/cliente")
+def vista_cliente():
+    """Ruta para que los clientes hagan sus pedidos individualmente"""
+    return render_template("cliente.html", productos=productos)
 
 
+@app.route("/enviar_pedido_cliente", methods=["POST"])
+def enviar_pedido_cliente():
+    """Recibe el carrito del cliente y lo suma a la cola general"""
+    global pedido_counter, pedidos
+    data = request.get_json()
+    items_cliente = data.get("items", [])
+    
+    # NUEVO: Capturar el nombre del cliente que viene de la web
+    nombre_cliente = data.get("nombre_cliente", "Cliente Anónimo")
+
+    if not items_cliente:
+        return jsonify({"error": "El carrito está vacío"}), 400
+
+    # Crear un nuevo pedido
+    pedido_counter += 1
+    pedido_id = pedido_counter
+    pedidos[pedido_id] = []
+
+    for item in items_cliente:
+        pedidos[pedido_id].append({
+            "nombre": item["nombre"],
+            "precio": float(item["precio"]),
+            "imagen": item["imagen"],
+            "tipo": item["tipo"],
+            "origen": "cliente", 
+            "cliente_nombre": nombre_cliente, # 👈 Se guarda el nombre en el pedido
+            "confirmado": False,
+            "eliminado": False
+        })
+
+    return jsonify({"success": True, "pedido_id": pedido_id})
+
+
+@app.route("/confirmar_pedido", methods=["POST"])
+def confirmar_pedido():
+    data = request.get_json()
+    try:
+        pedido_id = int(data.get("pedido_id"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "Datos inválidos"}), 400
+
+    if pedido_id in pedidos:
+        for item in pedidos[pedido_id]:
+            item["confirmado"] = True # Cambia el estado a confirmado
+
+    return jsonify(generar_respuesta_carrito(contar_eliminados=True))
+
+                   
 
 
 if __name__ == "__main__":
